@@ -23,12 +23,12 @@ Welcome, {{name}}!<br>
 
 {{#events}}
 {{description}} {{dateTime}}
-{{#userExists}}
+{{#showFavButton}}
 <form action="/fav" method="post" style="display: inline">
     <input type="hidden" value="{{id}}" name="id"/>
-    <button type="submit">Favorite</button>
+    <button type="submit">Add Favorite</button>
 </form>
-{{/userExists}}
+{{/showFavButton}}
 <br>
 {{/events}}
 

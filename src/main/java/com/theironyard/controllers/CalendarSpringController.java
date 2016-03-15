@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class CalendarSpringController {
             User user = users.findFirstByName(userName);
 
             model.addAttribute("user", users.findFirstByName(userName));
-            model.addAttribute("now", LocalDateTime.now());
+            model.addAttribute("now", LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
 
             for (Event event : eventEntities) {
                 event.setShowFavButton(favorites.findByUserAndEvent(user, event) == null);
