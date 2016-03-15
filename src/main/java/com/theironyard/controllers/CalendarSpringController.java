@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by Caroline on 3/14/16.
@@ -32,12 +33,18 @@ public class CalendarSpringController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session) {
         String userName = (String) session.getAttribute("userName");
+        List<Event> eventEntities = events.findAllByOrderByDateTimeDesc();
         if (userName != null) {
+            User user = users.findFirstByName(userName);
+
             model.addAttribute("user", users.findFirstByName(userName));
-            model.addAttribute("userExists", true);
             model.addAttribute("now", LocalDateTime.now());
+
+            for (Event event : eventEntities) {
+                event.setShowFavButton(favorites.findByUserAndEvent(user, event) == null);
+            }
         }
-        model.addAttribute("events", events.findAllByOrderByDateTimeDesc());
+        model.addAttribute("events", eventEntities);
         return "home";
     }
 
